@@ -1,0 +1,29 @@
+//@version=5
+indicator(title='sort', shorttitle='a', overlay=false)
+len = input.int(9, minval=1, title='Length')
+tolerans = input.float(3.5, minval=1, title='Tolerans', step=0.01)
+runtime = high - low
+
+srcx = if close - open < 0
+    open - close
+else
+    close - open
+
+
+offset = input.int(title='Offset', defval=0, minval=-500, maxval=500)
+ort = ta.sma(srcx[1], len)
+
+alert = false
+if runtime > ort * tolerans
+    alert := true
+    alert
+
+alertcondition(alert, 'Hareket_Varx', 'message')
+
+
+
+
+plot(runtime, color=color.new(color.red, 0), title='rt', style=plot.style_histogram, linewidth=4)
+plot(ort * tolerans, color=color.new(color.blue, 0), title='co', offset=offset, style=plot.style_histogram, linewidth=4)
+
+
